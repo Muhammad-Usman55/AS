@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AS. — Luxury Ladies Bags</title>
+  <meta name="description" content="AS. is a premium ladies bag boutique offering handcrafted leather handbags, totes, clutches, and crossbody bags for the modern woman." />
+  <meta property="og:title" content="AS. — Luxury Ladies Bags" />
+  <meta property="og:description" content="Discover our curated collection of premium ladies bags. Crafted to perfection." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ====== LOADER ====== -->
+  <div id="loader" class="loader">
+    <div class="loader-logo">AS.</div>
+    <div class="loader-bar"><div class="loader-fill"></div></div>
+  </div>
+
+  <!-- ====== TOAST NOTIFICATION ====== -->
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <!-- ====== CART DRAWER ====== -->
+  <div id="cart-overlay" class="cart-overlay" aria-hidden="true"></div>
+  <aside id="cart-drawer" class="cart-drawer" aria-label="Shopping Cart">
+    <div class="cart-header">
+      <h2>Your Bag <span id="cart-count-badge" class="cart-badge">0</span></h2>
+      <button id="cart-close-btn" class="cart-close" aria-label="Close cart">&times;</button>
+    </div>
+    <div id="cart-items" class="cart-items">
+      <div class="cart-empty">
+        <div class="cart-empty-icon">🛍️</div>
+        <p>Your bag is empty</p>
+        <span>Add some beautiful pieces</span>
+      </div>
+    </div>
+    <div class="cart-footer" id="cart-footer" style="display:none;">
+      <div class="cart-subtotal">
+        <span>Subtotal</span>
+        <span id="cart-subtotal">$0.00</span>
+      </div>
+      <p class="cart-shipping-note">Free shipping on orders over $150</p>
+      <button class="btn-checkout" id="checkout-btn">Proceed to Checkout</button>
+      <button class="btn-continue" id="continue-shopping-btn">Continue Shopping</button>
+    </div>
+  </aside>
+
+  <!-- ====== WISHLIST DRAWER ====== -->
+  <div id="wishlist-overlay" class="cart-overlay wishlist-overlay" aria-hidden="true"></div>
+  <aside id="wishlist-drawer" class="cart-drawer wishlist-drawer" aria-label="Wishlist">
+    <div class="cart-header">
+      <h2>Wishlist <span id="wishlist-count-badge" class="cart-badge">0</span></h2>
+      <button id="wishlist-close-btn" class="cart-close" aria-label="Close wishlist">&times;</button>
+    </div>
+    <div id="wishlist-items" class="cart-items">
+      <div class="cart-empty">
+        <div class="cart-empty-icon">🤍</div>
+        <p>Your wishlist is empty</p>
+        <span>Save items you love</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ====== PRODUCT MODAL ====== -->
+  <div id="modal-overlay" class="modal-overlay" aria-hidden="true"></div>
+  <div id="product-modal" class="product-modal" role="dialog" aria-modal="true" aria-label="Product Detail">
+    <button class="modal-close" id="modal-close-btn" aria-label="Close modal">&times;</button>
+    <div class="modal-content" id="modal-content"></div>
+  </div>
+
+  <!-- ====== HEADER ====== -->
+  <header id="site-header" class="site-header">
+    <div class="header-inner">
+      <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+      <a href="#home" class="brand-logo" id="brand-logo">AS.</a>
+      <nav class="main-nav" id="main-nav" aria-label="Main Navigation">
+        <ul>
+          <li><a href="#home" class="nav-link active" data-section="home">Home</a></li>
+          <li><a href="#collection" class="nav-link" data-section="collection">Collection</a></li>
+          <li><a href="#about" class="nav-link" data-section="about">About</a></li>
+          <li><a href="#contact" class="nav-link" data-section="contact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn" id="search-toggle-btn" aria-label="Search">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+        <button class="icon-btn" id="wishlist-toggle-btn" aria-label="Wishlist">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span id="wishlist-count" class="header-badge">0</span>
+        </button>
+        <button class="icon-btn cart-icon-btn" id="cart-toggle-btn" aria-label="Cart">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span id="cart-count" class="header-badge">0</span>
+        </button>
+      </div>
+    </div>
+    <!-- Search Bar -->
+    <div class="search-bar" id="search-bar">
+      <div class="search-inner">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="search-input" placeholder="Search for bags..." aria-label="Search products" />
+        <button id="search-close" aria-label="Close search">&times;</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Nav Drawer -->
+  <div id="mobile-nav-overlay" class="mobile-nav-overlay"></div>
+  <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile Navigation">
+    <button class="mobile-nav-close" id="mobile-nav-close" aria-label="Close menu">&times;</button>
+    <div class="mobile-nav-logo">AS.</div>
+    <ul>
+      <li><a href="#home" class="mobile-nav-link">Home</a></li>
+      <li><a href="#collection" class="mobile-nav-link">Collection</a></li>
+      <li><a href="#about" class="mobile-nav-link">About</a></li>
+      <li><a href="#contact" class="mobile-nav-link">Contact</a></li>
+    </ul>
+    <div class="mobile-nav-footer">
+      <p>Follow us</p>
+      <div class="social-links-mobile">
+        <a href="#" aria-label="Instagram">Instagram</a>
+        <a href="#" aria-label="Pinterest">Pinterest</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main-content">
+
+    <!-- ====== HERO SECTION ====== -->
+    <section id="home" class="hero-section">
+      <div class="hero-image-wrap">
+        <img src="images/hero_banner.png" alt="AS. Luxury Ladies Bags – Editorial" class="hero-bg-img" />
+        <div class="hero-overlay"></div>
+      </div>
+      <div class="hero-content">
+        <span class="hero-tagline">New Collection 2026</span>
+        <h1 class="hero-title">Crafted for the<br/><em>Modern Woman</em></h1>
+        <p class="hero-subtitle">Luxury leather bags that speak to your story.<br/>Timeless. Refined. Unapologetically you.</p>
+        <div class="hero-ctas">
+          <a href="#collection" class="btn-primary" id="hero-shop-btn">Shop Collection</a>
+          <a href="#about" class="btn-ghost">Our Story</a>
+        </div>
+      </div>
+      <div class="hero-scroll-hint">
+        <span>Scroll</span>
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- ====== MARQUEE BANNER ====== -->
+    <div class="marquee-section" aria-hidden="true">
+      <div class="marquee-track">
+        <span>Handcrafted Leather</span><span>✦</span>
+        <span>Free Shipping Over $150</span><span>✦</span>
+        <span>Luxury Craftsmanship</span><span>✦</span>
+        <span>New Arrivals 2026</span><span>✦</span>
+        <span>30-Day Returns</span><span>✦</span>
+        <span>Handcrafted Leather</span><span>✦</span>
+        <span>Free Shipping Over $150</span><span>✦</span>
+        <span>Luxury Craftsmanship</span><span>✦</span>
+        <span>New Arrivals 2026</span><span>✦</span>
+        <span>30-Day Returns</span><span>✦</span>
+      </div>
+    </div>
+
+    <!-- ====== FEATURED CATEGORIES ====== -->
+    <section class="categories-section" id="categories">
+      <div class="section-header">
+        <span class="section-label">Browse By Style</span>
+        <h2>Find Your Perfect Bag</h2>
+      </div>
+      <div class="categories-grid">
+        <div class="category-card" data-filter="tote" id="cat-tote">
+          <img src="images/cat_totes.png" alt="Tote Bags" class="category-img" />
+          <div class="category-overlay"></div>
+          <div class="category-text">
+            <h3>Totes</h3>
+            <span>Everyday Elegance</span>
+          </div>
+        </div>
+        <div class="category-card" data-filter="shoulder" id="cat-shoulder">
+          <img src="images/cat_shoulder.png" alt="Shoulder Bags" class="category-img" />
+          <div class="category-overlay"></div>
+          <div class="category-text">
+            <h3>Shoulder Bags</h3>
+            <span>Classic &amp; Timeless</span>
+          </div>
+        </div>
+        <div class="category-card" data-filter="crossbody" id="cat-crossbody">
+          <img src="images/cat_crossbody.png" alt="Crossbody Bags" class="category-img" />
+          <div class="category-overlay"></div>
+          <div class="category-text">
+            <h3>Crossbody</h3>
+            <span>On-The-Go Style</span>
+          </div>
+        </div>
+        <div class="category-card" data-filter="clutch" id="cat-clutch">
+          <img src="images/cat_clutches.png" alt="Clutches" class="category-img" />
+          <div class="category-overlay"></div>
+          <div class="category-text">
+            <h3>Clutches</h3>
+            <span>Evening Glamour</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== COLLECTION / PRODUCTS ====== -->
+    <section id="collection" class="collection-section">
+      <div class="section-header">
+        <span class="section-label">Our Collection</span>
+        <h2>Signature Pieces</h2>
+        <p class="section-desc">Every bag is a statement. Discover pieces crafted from the finest materials.</p>
+      </div>
+
+      <!-- Filters -->
+      <div class="filter-bar" role="group" aria-label="Filter products">
+        <button class="filter-btn active" data-filter="all" id="filter-all">All</button>
+        <button class="filter-btn" data-filter="tote" id="filter-tote">Totes</button>
+        <button class="filter-btn" data-filter="shoulder" id="filter-shoulder">Shoulder</button>
+        <button class="filter-btn" data-filter="crossbody" id="filter-crossbody">Crossbody</button>
+        <button class="filter-btn" data-filter="clutch" id="filter-clutch">Clutches</button>
+        <button class="filter-btn" data-filter="bucket" id="filter-bucket">Bucket</button>
+      </div>
+
+      <!-- Sort -->
+      <div class="sort-bar">
+        <label for="sort-select">Sort by:</label>
+        <select id="sort-select" class="sort-select">
+          <option value="default">Featured</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="name-asc">Name: A–Z</option>
+        </select>
+        <span id="product-count" class="product-count">7 products</span>
+      </div>
+
+      <!-- Product Grid -->
+      <div class="products-grid" id="products-grid" role="list"></div>
+    </section>
+
+    <!-- ====== PROMO BANNER ====== -->
+    <section class="promo-section">
+      <div class="promo-inner">
+        <div class="promo-text">
+          <span class="section-label">Limited Time</span>
+          <h2>Summer Edit — Up to 20% Off</h2>
+          <p>Select pieces from our summer collection are now on sale. Don't miss out on these timeless finds.</p>
+          <a href="#collection" class="btn-primary" id="promo-shop-btn">Shop Sale</a>
+        </div>
+        <div class="promo-image-grid">
+          <div class="promo-img-item">
+            <img src="images/bag_burgundy.png" alt="Burgundy leather handbag on sale" />
+          </div>
+          <div class="promo-img-item promo-img-offset">
+            <img src="images/bag_camel_tote.png" alt="Camel tote bag on sale" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== FEATURES / USP ====== -->
+    <section class="features-section" id="features">
+      <div class="features-grid">
+        <div class="feature-item" id="feature-crafted">
+          <div class="feature-icon">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 4C13 4 4 13 4 24s9 20 20 20 20-9 20-20S35 4 24 4z" stroke="currentColor" stroke-width="1.5"/><path d="M24 14v10l6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Handcrafted</h3>
+          <p>Each bag is handmade by skilled artisans using time-honored techniques.</p>
+        </div>
+        <div class="feature-item" id="feature-leather">
+          <div class="feature-icon">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="8" width="32" height="32" rx="4" stroke="currentColor" stroke-width="1.5"/><path d="M16 24h16M24 16v16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Premium Leather</h3>
+          <p>Sourced from the world's finest tanneries. Quality you can feel and see.</p>
+        </div>
+        <div class="feature-item" id="feature-shipping">
+          <div class="feature-icon">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="16" width="30" height="20" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M34 20h6l4 8v8h-10V20z" stroke="currentColor" stroke-width="1.5"/><circle cx="14" cy="38" r="4" stroke="currentColor" stroke-width="1.5"/><circle cx="38" cy="38" r="4" stroke="currentColor" stroke-width="1.5"/></svg>
+          </div>
+          <h3>Free Shipping</h3>
+          <p>Complimentary delivery on all orders over $150. Worldwide shipping available.</p>
+        </div>
+        <div class="feature-item" id="feature-returns">
+          <div class="feature-icon">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 20C8 13.373 13.373 8 20 8h8c6.627 0 12 5.373 12 12v8c0 6.627-5.373 12-12 12h-8C13.373 40 8 34.627 8 28v-8z" stroke="currentColor" stroke-width="1.5"/><path d="M16 24h16M22 18l-6 6 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>Easy Returns</h3>
+          <p>30-day hassle-free returns. Your satisfaction is our commitment.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== TESTIMONIALS ====== -->
+    <section class="testimonials-section" id="testimonials">
+      <div class="section-header">
+        <span class="section-label">Customer Love</span>
+        <h2>What They Say</h2>
+      </div>
+      <div class="testimonials-track-wrap">
+        <div class="testimonials-track" id="testimonials-track">
+          <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <blockquote>"The craftsmanship is absolutely impeccable. My burgundy bag turns heads everywhere I go. Worth every penny!"</blockquote>
+            <div class="testimonial-author">
+              <div class="author-avatar" style="background:#b8860b">A</div>
+              <div><strong>Aisha M.</strong><span>Lahore, Pakistan</span></div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <blockquote>"I bought the camel tote and I use it every single day. The leather is so buttery soft. AS. is my go-to brand now!"</blockquote>
+            <div class="testimonial-author">
+              <div class="author-avatar" style="background:#8b6e4e">S</div>
+              <div><strong>Sara K.</strong><span>Dubai, UAE</span></div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <blockquote>"Ordered two bags and they arrived beautifully packaged. The quality is beyond what I expected for the price."</blockquote>
+            <div class="testimonial-author">
+              <div class="author-avatar" style="background:#6b4c7a">N</div>
+              <div><strong>Nadia R.</strong><span>Karachi, Pakistan</span></div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <blockquote>"The forest green satchel is a dream. Sturdy, elegant, and the perfect size. Highly recommend AS. to everyone!"</blockquote>
+            <div class="testimonial-author">
+              <div class="author-avatar" style="background:#3d7a5e">F</div>
+              <div><strong>Fatima H.</strong><span>Islamabad, Pakistan</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-controls">
+          <button class="t-btn" id="t-prev" aria-label="Previous testimonial">&#8592;</button>
+          <div class="t-dots" id="t-dots"></div>
+          <button class="t-btn" id="t-next" aria-label="Next testimonial">&#8594;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== ABOUT SECTION ====== -->
+    <section id="about" class="about-section">
+      <div class="about-inner">
+        <div class="about-image-stack">
+          <img src="images/bag_black_quilted.png" alt="AS. signature quilted bag" class="about-img about-img-main" />
+          <img src="images/bag_burgundy.png" alt="AS. signature burgundy leather bag" class="about-img about-img-secondary" />
+          <div class="about-badge">Est. 2020</div>
+        </div>
+        <div class="about-text">
+          <span class="section-label">Our Story</span>
+          <h2>Born From a<br/>Love of Leather</h2>
+          <p>AS. was founded in 2020 with a simple belief: every woman deserves a bag that is both beautiful and built to last. We partner directly with artisan ateliers to bring you bags that marry heritage craftsmanship with contemporary design.</p>
+          <p>From the tanneries of Italy to the workshops of our skilled craftspeople, every stitch, every zipper, every piece of hardware is chosen with intention. We believe quality should never be compromised.</p>
+          <div class="about-stats">
+            <div class="stat-item">
+              <span class="stat-num">2000+</span>
+              <span class="stat-label">Happy Customers</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">50+</span>
+              <span class="stat-label">Unique Designs</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">15+</span>
+              <span class="stat-label">Countries Shipped</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== NEWSLETTER ====== -->
+    <section class="newsletter-section" id="newsletter">
+      <div class="newsletter-inner">
+        <div class="newsletter-decoration"></div>
+        <span class="section-label">Stay in the Loop</span>
+        <h2>Join the AS. Circle</h2>
+        <p>Be the first to know about new arrivals, exclusive offers, and styling tips delivered straight to your inbox.</p>
+        <form class="newsletter-form" id="newsletter-form" novalidate>
+          <div class="newsletter-input-wrap">
+            <input type="email" id="newsletter-email" placeholder="Your email address" aria-label="Email address for newsletter" required />
+            <button type="submit" class="btn-primary" id="newsletter-submit">Subscribe</button>
+          </div>
+          <p class="newsletter-privacy">No spam, ever. Unsubscribe at any time.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- ====== CONTACT SECTION ====== -->
+    <section id="contact" class="contact-section">
+      <div class="section-header">
+        <span class="section-label">Get In Touch</span>
+        <h2>We'd Love to Hear From You</h2>
+      </div>
+      <div class="contact-inner">
+        <div class="contact-info">
+          <div class="contact-info-item" id="contact-email-info">
+            <div class="contact-icon">✉️</div>
+            <div>
+              <strong>Email Us</strong>
+              <a href="mailto:hello@asbags.com">hello@asbags.com</a>
+            </div>
+          </div>
+          <div class="contact-info-item" id="contact-phone-info">
+            <div class="contact-icon">📞</div>
+            <div>
+              <strong>Call Us</strong>
+              <a href="tel:+923001234567">+92 300 123 4567</a>
+            </div>
+          </div>
+          <div class="contact-info-item" id="contact-location-info">
+            <div class="contact-icon">📍</div>
+            <div>
+              <strong>Visit Us</strong>
+              <span>Gulberg III, Lahore, Pakistan</span>
+            </div>
+          </div>
+          <div class="contact-social">
+            <p>Follow AS. on social</p>
+            <div class="social-links">
+              <a href="#" class="social-link" id="social-instagram" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+              </a>
+              <a href="#" class="social-link" id="social-facebook" aria-label="Facebook">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              </a>
+              <a href="#" class="social-link" id="social-pinterest" aria-label="Pinterest">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.98.03-2.83.19-.79 1.27-5.39 1.27-5.39s-.32-.65-.32-1.61c0-1.51.88-2.64 1.97-2.64.93 0 1.38.7 1.38 1.54 0 .94-.6 2.35-.91 3.65-.26 1.09.54 1.98 1.61 1.98 1.93 0 3.41-2.03 3.41-4.97 0-2.6-1.87-4.42-4.54-4.42-3.09 0-4.9 2.32-4.9 4.72 0 .94.36 1.94.81 2.49.09.11.1.2.07.31-.08.34-.27 1.09-.31 1.24-.05.2-.17.24-.39.15-1.45-.68-2.36-2.8-2.36-4.51 0-3.67 2.66-7.03 7.68-7.03 4.03 0 7.16 2.87 7.16 6.71 0 4-2.52 7.22-6.02 7.22-1.18 0-2.28-.61-2.66-1.33l-.72 2.7c-.26.99-.96 2.24-1.43 2.99.61.19 1.25.29 1.92.29 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+              </a>
+              <a href="#" class="social-link" id="social-whatsapp" aria-label="WhatsApp">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <form class="contact-form" id="contact-form" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="contact-name">Full Name</label>
+              <input type="text" id="contact-name" placeholder="Your full name" required />
+            </div>
+            <div class="form-group">
+              <label for="contact-email">Email</label>
+              <input type="email" id="contact-email" placeholder="your@email.com" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="contact-subject">Subject</label>
+            <input type="text" id="contact-subject" placeholder="How can we help?" />
+          </div>
+          <div class="form-group">
+            <label for="contact-message">Message</label>
+            <textarea id="contact-message" rows="5" placeholder="Tell us more..." required></textarea>
+          </div>
+          <button type="submit" class="btn-primary" id="contact-submit-btn">Send Message</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="site-footer" id="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">AS.</div>
+        <p>Luxury ladies bags crafted for the modern woman. Timeless. Refined.</p>
+        <div class="social-links">
+          <a href="#" class="social-link" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="#" class="social-link" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="#" class="social-link" aria-label="Pinterest">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.98.03-2.83.19-.79 1.27-5.39 1.27-5.39s-.32-.65-.32-1.61c0-1.51.88-2.64 1.97-2.64.93 0 1.38.7 1.38 1.54 0 .94-.6 2.35-.91 3.65-.26 1.09.54 1.98 1.61 1.98 1.93 0 3.41-2.03 3.41-4.97 0-2.6-1.87-4.42-4.54-4.42-3.09 0-4.9 2.32-4.9 4.72 0 .94.36 1.94.81 2.49.09.11.1.2.07.31-.08.34-.27 1.09-.31 1.24-.05.2-.17.24-.39.15-1.45-.68-2.36-2.8-2.36-4.51 0-3.67 2.66-7.03 7.68-7.03 4.03 0 7.16 2.87 7.16 6.71 0 4-2.52 7.22-6.02 7.22-1.18 0-2.28-.61-2.66-1.33l-.72 2.7c-.26.99-.96 2.24-1.43 2.99.61.19 1.25.29 1.92.29 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="#collection">All Bags</a></li>
+            <li><a href="#collection">New Arrivals</a></li>
+            <li><a href="#collection">Best Sellers</a></li>
+            <li><a href="#collection">Sale</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Help</h4>
+          <ul>
+            <li><a href="#contact">Contact Us</a></li>
+            <li><a href="#">Shipping Info</a></li>
+            <li><a href="#">Returns & Exchanges</a></li>
+            <li><a href="#">Size Guide</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>About</h4>
+          <ul>
+            <li><a href="#about">Our Story</a></li>
+            <li><a href="#">Sustainability</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Press</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 AS. All rights reserved.</p>
+      <div class="footer-legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookies</a>
+      </div>
+      <div class="payment-icons" aria-label="Accepted payment methods">
+        <span class="payment-icon" title="Visa">VISA</span>
+        <span class="payment-icon" title="Mastercard">MC</span>
+        <span class="payment-icon" title="PayPal">PayPal</span>
+        <span class="payment-icon" title="Stripe">Stripe</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" id="back-to-top" aria-label="Back to top">↑</button>
+
+  <script src="app.js"></script>
+</body>
+</html>
