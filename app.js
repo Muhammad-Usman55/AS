@@ -366,10 +366,7 @@ function getProductFilter(product, color) {
    LOADER
    ====================================== */
 window.addEventListener('load', () => {
-  setTimeout(() => {
-    $('loader').classList.add('hidden');
-    initReveal();
-  }, 1400);
+  initReveal();
 });
 
 /* ======================================
